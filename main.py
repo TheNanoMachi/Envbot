@@ -4,11 +4,6 @@ import random
 
 key = 'TOKEN'
 
-# def get_hash(hashValue):
-#   response = requests.get("http://api.hashify.net/hash/md4/hex?value="+hashValue)
-#   print(response)
-#   return response
-
 
 def readmessages():
   file = open("messagerecord.txt", "r")
@@ -18,20 +13,6 @@ def readmessages():
   return var
 
 messagesSent = int(readmessages())
-
-
-# def messageCheck(server):
-#   f = open("messagerecord.txt", "rt+")
-#   for i in f:
-#     value = i.split()
-#     print(i)
-#     if server == value[1]:
-#       f.close()
-#       return value[0]
-#     else:
-#       f.write("0 "+ server + "\n")
-#       f.close()
-#       return 0
     
 
 def format_array(array):
@@ -229,7 +210,6 @@ commands = ['$test', '$commands', '$description', '$fact', '$species', '$climate
 
 treesPlanted = 0
 
-
 Client = discord.Client()
 
 @Client.event
@@ -259,9 +239,6 @@ async def on_message(message):
   if message.content.startswith('$climate'):
     await message.channel.send(EnvironmentalFacts['Climate'][random.randint(0, len(EnvironmentalFacts['Climate'])-1)])
   
-  # if message.content.startswith('$trees'):
-  #   await message.channel.send(messageCheck(str(message.guild)))
-  
   if message.content.startswith('$ocean'):
     await message.channel.send(EnvironmentalFacts['Ocean'][random.randint(0, len(EnvironmentalFacts['Ocean'])-1)])
 
@@ -283,14 +260,6 @@ async def on_message(message):
 
   if message.content.startswith('$server'):
     await message.channel.send("You are in "+str(message.guild))
-
-  
-  # for i in f:
-  #   value = i.split()
-  #   if value[1] == str(message.guild):
-  #     print(value[0])
-  #     f.seek(0)
-  #     f.write(str(int(value[0])+1))
 
   if not message.content.startswith('$'):
     messagesSent += 1
