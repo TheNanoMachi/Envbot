@@ -4,27 +4,34 @@ import random
 
 key = 'TOKEN'
 
-messagesSent = 0
-
 # def get_hash(hashValue):
 #   response = requests.get("http://api.hashify.net/hash/md4/hex?value="+hashValue)
 #   print(response)
 #   return response
 
 
-
-def messageCheck(server):
-  f = open("messagerecord.txt", "rt+")
-  for i in f:
+def readmessages():
+  file = open("messagerecord.txt", "r")
+  for i in file:
     value = i.split()
-    print(i)
-    if server == value[1]:
-      f.close()
-      return value[0]
-    else:
-      f.write("0 "+ server + "\n")
-      f.close()
-      return 0
+    var = value[0]
+  return var
+
+messagesSent = int(readmessages())
+
+
+# def messageCheck(server):
+#   f = open("messagerecord.txt", "rt+")
+#   for i in f:
+#     value = i.split()
+#     print(i)
+#     if server == value[1]:
+#       f.close()
+#       return value[0]
+#     else:
+#       f.write("0 "+ server + "\n")
+#       f.close()
+#       return 0
     
 
 def format_array(array):
@@ -200,7 +207,7 @@ EnvironmentalFacts = {
     "https://thumbs-prod.si-cdn.com/qn4AI9OgMpkIMPe_99j_zaUmgTc=/fit-in/1600x0/https://public-media.si-cdn.com/filer/fa/8d/fa8d22e3-9b93-426c-bb3e-a0b8c28d122f/12685861633_1708f2dbff_o1.jpg",
     "https://i.guim.co.uk/img/media/27974093ba1227c5e6ba29794f15a8c72266c447/0_68_2048_1229/master/2048.jpg?width=445&quality=45&auto=format&fit=max&dpr=2&s=9ed032b527c4217b2df8020ce836b682",
     "https://www.ucsusa.org/sites/default/files/styles/original/public/images/1200-corndrought.jpg?itok=EAJuxQvZ",
-    "https://img.lovepik.com/photo/40020/0061.jpg_wh300.jpg",
+    "https://media.istockphoto.com/vectors/web-vector-id1215858570?k=6&m=1215858570&s=612x612&w=0&h=L9Oo2AkZ2hyhqfEKL3Wrfm7aioAQ2VXrnQP1tDk3ujg=",
     "https://i.pinimg.com/736x/ba/3c/e7/ba3ce7e2bd8cb6cac3c95a0c0943acec.jpg",
     "https://www.imperial.ac.uk/ImageCropToolT4/imageTool/uploaded-images/newseventsimage_1614176492477_mainnews2012_x1.jpg",
     "https://lh3.googleusercontent.com/proxy/wMwoAippYPzGruQsUDdzS3VKC6HPgxwa0CunC35YqXihbPvQTAs1b1DX_nKegBFpEc3Kwusa6MMuAIe2SaUpWWcen7onDnDGxw",
@@ -221,6 +228,7 @@ EnvironmentalFacts = {
 commands = ['$test', '$commands', '$description', '$fact', '$species', '$climate', '$ocean', '$quotes', '$trees', '$image', '$checkmessages', '$humanactivity', '$improve']
 
 treesPlanted = 0
+
 
 Client = discord.Client()
 
@@ -251,8 +259,8 @@ async def on_message(message):
   if message.content.startswith('$climate'):
     await message.channel.send(EnvironmentalFacts['Climate'][random.randint(0, len(EnvironmentalFacts['Climate'])-1)])
   
-  if message.content.startswith('$trees'):
-    await message.channel.send(messageCheck(str(message.guild)))
+  # if message.content.startswith('$trees'):
+  #   await message.channel.send(messageCheck(str(message.guild)))
   
   if message.content.startswith('$ocean'):
     await message.channel.send(EnvironmentalFacts['Ocean'][random.randint(0, len(EnvironmentalFacts['Ocean'])-1)])
@@ -272,27 +280,28 @@ async def on_message(message):
   if message.content.startswith('$planted'):
     await message.channel.send("You have planted "+str(treesPlanted)+" trees.")
 
+
   if message.content.startswith('$server'):
     await message.channel.send("You are in "+str(message.guild))
 
   
-  for i in f:
-    value = i.split()
-    if value[1] == str(message.guild):
-      print(value[0])
-      i.replace(value[0], str(int(value[0])+1))
+  # for i in f:
+  #   value = i.split()
+  #   if value[1] == str(message.guild):
+  #     print(value[0])
+  #     f.seek(0)
+  #     f.write(str(int(value[0])+1))
 
   if not message.content.startswith('$'):
     messagesSent += 1
   
   if message.content.startswith("$checkmessages"):
-    await message.channel.send("Server has typed "+str(messageCheck(str(message.guild)))+ " messages.")
+    await message.channel.send("Server has typed "+str(messagesSent)+ " messages.")
   
   if message.content.startswith("$commands"):
     await message.channel.send(format_array(commands))
   
   f.close()
-  
-  
-
 Client.run(os.getenv(key))
+
+Client.run(os.getenv('TOKEN'))
