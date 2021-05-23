@@ -1,6 +1,7 @@
 import os
 import discord
 import random
+import math
 
 key = 'TOKEN'
 
@@ -12,8 +13,14 @@ def readmessages():
     var = value[0]
   return var
 
+
+def calculatePlanted(messages):
+  out = math.floor(messages/1000)
+  return out
+
+
 messagesSent = int(readmessages())
-    
+
 
 def format_array(array):
   output = ''
@@ -191,7 +198,7 @@ EnvironmentalFacts = {
     "https://media.istockphoto.com/vectors/web-vector-id1215858570?k=6&m=1215858570&s=612x612&w=0&h=L9Oo2AkZ2hyhqfEKL3Wrfm7aioAQ2VXrnQP1tDk3ujg=",
     "https://i.pinimg.com/736x/ba/3c/e7/ba3ce7e2bd8cb6cac3c95a0c0943acec.jpg",
     "https://www.imperial.ac.uk/ImageCropToolT4/imageTool/uploaded-images/newseventsimage_1614176492477_mainnews2012_x1.jpg",
-    "https://lh3.googleusercontent.com/proxy/wMwoAippYPzGruQsUDdzS3VKC6HPgxwa0CunC35YqXihbPvQTAs1b1DX_nKegBFpEc3Kwusa6MMuAIe2SaUpWWcen7onDnDGxw",
+    "https://img.freepik.com/free-vector/polluter-car-atmospheric-pollution-industrial-factory-automobile-traffic-engine-smoke-bad-urban-environment-background_80590-7691.jpg?size=626&ext=jpg",
     "https://image.freepik.com/free-vector/pollution-earth-with-dirty-smoke-from-factory-buildings_1639-11884.jpg",
     "https://e360.yale.edu/assets/site/GettyImages-1165944572_Mumbai-flooding_web.jpg",
     "https://i.pinimg.com/originals/48/ee/13/48ee1307af4f9b6b0ead7c3930c432f7.jpg",
@@ -202,11 +209,13 @@ EnvironmentalFacts = {
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqc0b4QS0aoOL13bA8hklgPqjCZSYjJ56PdubYu9noMJ83IAFpAcdAiEZhdnxa5oRs-6w&usqp=CAU",
     "https://image.freepik.com/free-vector/save-planet-concept-with-cute-smiling-earth_23-2148519535.jpg",
     "https://static.vecteezy.com/system/resources/previews/002/084/011/original/cute-earth-mascot-character-save-earth-cartoon-icon-illustration-free-vector.jpg",
-    "https://i.ibb.co/wMdVMfn/image.png "
+    "https://i.ibb.co/wMdVMfn/image.png",
+    "https://cdn.discordapp.com/attachments/845696604207448067/846003075696164944/polluter-car-atmospheric-pollution-industrial-factory-automobile-traffic-engine-smoke-bad-urban-envi.png",
+    "https://www.ucsusa.org/sites/default/files/styles/large/public/images/vehicles-air-pollution.jpg"
   ]
 }
 
-commands = ['$test', '$commands', '$description', '$fact', '$species', '$climate', '$ocean', '$quotes', '$trees', '$image', '$checkmessages', '$humanactivity', '$improve']
+commands = ['$test', '$commands', '$description', '$fact', '$species', '$climate', '$ocean', '$quotes', '$trees', '$images', '$checkmessages', '$humanactivity', '$improve', '$planted']
 
 treesPlanted = 0
 
@@ -255,7 +264,7 @@ async def on_message(message):
     await message.channel.send(EnvironmentalFacts['improve'][random.randint(0, len(EnvironmentalFacts['improve'])-1)])
 
   if message.content.startswith('$planted'):
-    await message.channel.send("You have planted "+str(treesPlanted)+" trees.")
+    await message.channel.send("You have planted "+str(calculatePlanted(messagesSent))+" trees.")
 
 
   if message.content.startswith('$server'):
