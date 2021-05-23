@@ -14,12 +14,10 @@ messagesSent = 0
 
 
 def messageCheck(server):
-  try:
-    f = open("messagerecord.txt", 'x+')
-  except FileExistsError:
-    f = open("messagerecord.txt", 'a+')
+  f = open("messagerecord.txt", "rt+")
   for i in f:
     value = i.split()
+    print(i)
     if server == value[1]:
       f.close()
       return value[0]
@@ -233,7 +231,7 @@ async def on_ready():
 @Client.event
 async def on_message(message):
   global messagesSent
-  f = open("messagerecord.txt", 'a+')
+  f = open("messagerecord.txt", 'rt+')
 
   if message.author == Client.user:
     return
@@ -277,13 +275,15 @@ async def on_message(message):
   if message.content.startswith('$server'):
     await message.channel.send("You are in "+str(message.guild))
 
-  messagesSent += 1
   
   for i in f:
-    f.write(i.replace(str(messagesSent-1), str(messagesSent)))
+    value = i.split()
+    if value[1] == str(message.guild):
+      print(value[0])
+      i.replace(value[0], str(int(value[0])+1))
 
-  if message.content.startswith('$'):
-    messagesSent -= 1
+  if not message.content.startswith('$'):
+    messagesSent += 1
   
   if message.content.startswith("$checkmessages"):
     await message.channel.send("Server has typed "+str(messageCheck(str(message.guild)))+ " messages.")
